@@ -1,0 +1,27 @@
+{
+	"a": {
+		"operation": "||",
+		"variables": [
+			{
+				"operation": "<",
+				"variables": [
+					5,
+					1
+				]
+			},
+			{
+				"operation": "&&",
+				"variables": [
+					{
+						"operation": "==",
+						"variables": [
+							8,
+							2
+						]
+					},
+					true
+				]
+			}
+		]
+	}
+}

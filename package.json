@@ -1,0 +1,30 @@
+{
+  "name": "json-logic",
+  "version": "1.0.0",
+  "description": "Package for expressing local operations in JSON. Useful for storing logical procedures in a database.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha spec/**/*-spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ChrisTheBaron/node-json-logic.git"
+  },
+  "keywords": [
+    "logic",
+		"json"
+  ],
+  "author": "Chris Taylor",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ChrisTheBaron/node-json-logic/issues"
+  },
+  "homepage": "https://github.com/ChrisTheBaron/node-json-logic",
+	"devDependencies": {
+		"chai": "^2.1.2",
+		"chai-as-promised": "^4.3.0",
+		"mocha": "^2.2.1",
+		"sinon": "^1.14.1",
+		"sinon-chai": "^2.7.0"
+	}
+}

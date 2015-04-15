@@ -1,0 +1,18 @@
+[
+	{
+		"a": true,
+		"b": false
+	},
+	{
+		"c": {
+			"operation": "&&",
+			"variables": [
+				"a",
+				"b"
+			]
+		}
+	},
+	{
+		"c": "c"
+	}
+]
