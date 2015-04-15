@@ -1,5 +1,5 @@
-# node-json-loic
-Package for expressing logical operations in JSON. Useful for storing logicalprocedures in a database.
+# node-json-logic
+Package for expressing logical operations in JSON. Useful for storing logical procedures in a database.
 ## Examples of use
 ```javascript
 var JSONMath = require('json-logic');
