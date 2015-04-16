@@ -14,7 +14,7 @@ describe('Recurse it doing variable logic', function () {
 
 		var result = logic.execute(variables);
 
-		assert.deepEqual(result, {a: true, b: false, c: false});
+		assert.deepEqual(result, {a: true, b: true, c: true});
 
 	});
 

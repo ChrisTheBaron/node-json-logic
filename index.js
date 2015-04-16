@@ -8,21 +8,24 @@
  */
 var JSONLogic = module.exports = function (options) {
 
-	options = options || {};
+	this._options = options || {};
 
-	this.strict = options.strict || true;
+	this._options.strict = this._options.strict || false;
 
-	this.variables = {};
+	this._variables = this._options.variables || {};
 
 };
 
 /**
  * Executes one or more logical operations on a set of variables
  * @param {Array|Object} operations
+ * @param {Object} temporaryVariables
  * @returns {Object|null}
  * @throws Error
  */
-JSONLogic.prototype.execute = function (operations) {
+JSONLogic.prototype.execute = function (operations, temporaryVariables) {
+
+	this._temporaryVariables = temporaryVariables || {};
 
 	switch (operations.constructor) {
 
@@ -33,7 +36,7 @@ JSONLogic.prototype.execute = function (operations) {
 			return this._executeObject(operations);
 			break;
 		default:
-			if (this.strict) {
+			if (this._options.strict) {
 				throw new Error("Invalid call to JSONLogic#execute with: " + JSON.stringify(operations));
 			}
 			return null;
@@ -56,7 +59,7 @@ JSONLogic.prototype._executeArray = function (operations) {
 
 	}.bind(this));
 
-	return this.variables;
+	return this._variables;
 
 };
 
@@ -84,12 +87,12 @@ JSONLogic.prototype._executeObject = function (operation) {
 	for (var variable in newVariables) {
 		if (newVariables.hasOwnProperty(variable)) {
 
-			this.variables[variable] = newVariables[variable];
+			this._variables[variable] = newVariables[variable];
 
 		}
 	}
 
-	return this.variables;
+	return this._variables;
 
 };
 
@@ -155,7 +158,7 @@ JSONLogic.prototype._calculate = function (operation) {
 			if (operation === true || operation === false) {
 				return operation;
 			} else if (operation.constructor === String) {
-				return this.variables[operation];
+				return this._getVariable(operation);
 			}
 			throw new Error("Invalid operation to perform: " + JSON.stringify(operation));
 			break;
@@ -166,7 +169,7 @@ JSONLogic.prototype._calculate = function (operation) {
 	if (a.constructor === Object) {
 		a = this._calculate(a);
 	} else if (a.constructor === String) {
-		a = this.variables[a];
+		a = this._getVariable(a);
 	}
 
 	var b = operation.variables[1];
@@ -174,9 +177,8 @@ JSONLogic.prototype._calculate = function (operation) {
 	if (b.constructor === Object) {
 		b = this._calculate(b);
 	} else if (a.constructor === String) {
-		b = this.variables[b];
+		b = this._getVariable(b);
 	}
-
 	return func(a, b);
 
 };
@@ -226,3 +228,25 @@ JSONLogic.prototype._calcOr = function (operation) {
 	return result;
 
 };
+
+/**
+ * Gets a variable from allowed sources by name
+ * @param {String} name
+ * @returns {Number|Boolean}
+ * @throws Error
+ * @private
+ */
+JSONLogic.prototype._getVariable = function (name) {
+
+	if (this._temporaryVariables[name]) {
+		return this._temporaryVariables[name];
+	} else if (this._variables[name]) {
+		return this._variables[name];
+	} else if (this._options.strict) {
+		throw new Error("Variable '" + name + "' has not been initalised");
+	} else {
+		return false;
+	}
+
+};
+
